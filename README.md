@@ -19,26 +19,22 @@ Problem statement: https://fetch-hiring.s3.us-east-1.amazonaws.com/points.pdf
 ```
 pip install -r requirements.txt
 ``` 
-* Use the following command to run the application
+* Use following command to run the application
 ```
 python app.py
 ```
 * Server would start running and the server URL with port number will be shown in the command line
 * You can use application like postman to test the application
+* Check the below sample requests and responses for more information on endpoints
 
 ## Sample Use Cases
 ![Transaction request](/images/transaction_request.png "Transaction sample request")
-**<center>Sample Transaction request</center><br/>**
 
 ![Transaction response](/images/transaction_response.png "Transaction sample response")
-**<center>Sample Transaction response</center><br/>**
 
 ![Balance request](/images/balance_request_response.png "Balance sample request and response")
-**<center>Sample Balance request and response</center><br/>**
 
 ![Spend request](/images/spend_request.png "Spend sample request")
-**<center>Sample Spend request</center><br/>**
 
 ![Spend response](/images/spend_response.png "Spend sample response")
-**<center>Sample Spend response</center><br/>**
 
