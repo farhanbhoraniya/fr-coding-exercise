@@ -1,9 +1,9 @@
 import time
 
 class TransactionNode():
-    def __init__(self, payer=None, points=None):
+    def __init__(self, payer=None, points=None, timestamp=None):
         self.payer = payer
-        self.timestamp = time.time()
+        self.timestamp = timestamp
         self.points = points
 
     def __lt__(self, other):

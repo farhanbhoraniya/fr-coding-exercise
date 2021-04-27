@@ -25,7 +25,7 @@ python app.py
 ```
 * Server would start running and the server URL with port number will be shown in the command line
 * You can use application like postman to test the application
-* Check the below sample requests and responses for more information on endpoints
+* Check the below sample requests and responses for more information on endpoints request body and expected response
 
 ## Sample Use Cases
 ![Transaction request](/images/transaction_request.png "Transaction sample request")

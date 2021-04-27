@@ -1,7 +1,7 @@
 from flask import Flask, request, Response, jsonify
 import json
 import time
-import datetime
+from datetime import datetime
 from heapq import heappush, heappop
 from TSNode import TransactionNode
 
@@ -102,7 +102,7 @@ def spend_points(points, balance_heap):
             transactions_list.append(node)
         else:
             # If the node has enough points, subtract it from the points, and put remaining points into heap
-            new_node = TransactionNode(payer=node.payer, points=node.points - points)
+            new_node = TransactionNode(payer=node.payer, points=node.points - points, timestamp=node.timestamp)
             transactions_list.append(new_node)
             payer_dict[node.payer] = payer_dict.get(node.payer, 0) + points
             node.points -= points
@@ -122,13 +122,13 @@ def index():
 def transactions():
     try:
         data = json.loads(request.data)
-    except Exception as e:
+    except:
         return Response('{"error": "Invalid request body"}', status=400, mimetype='application/json')
 
 
     # If data is missing from the request body
-    if data.get("payer") is None or data.get("points") is None:
-        return Response('{"error": "Invalid request body"}', status=400, mimetype='application/json')
+    if data.get("payer") is None or data.get("points") is None or data.get("timestamp") is None:
+        return Response('{"error": "Invalid request body. Missing required parameter"}', status=400, mimetype='application/json')
 
     # To check if points value is integer
     try:
@@ -136,9 +136,14 @@ def transactions():
     except:
         return Response(json.dumps({'error': 'Invalid point value'}), status=400, mimetype='application/json')
 
+    try:
+        timestamp = datetime.strptime(data['timestamp'], "%Y-%m-%dT%H:%M:%SZ")
+    except:
+        return Response(json.dumps({'error': 'Invalid timestamp value'}), status=400, mimetype='application/json')
+
     payer = data['payer']
 
-    node = TransactionNode(points=points, payer=payer)
+    node = TransactionNode(points=points, payer=payer, timestamp=timestamp)
 
     # If transaction points are negative, reduce it from existing points if payer has enough points, return error otherwise
     if points < 0:
@@ -162,7 +167,7 @@ def transactions():
     response = {
         'points': points,
         'payer': payer,
-        'timestamp': datetime.datetime.utcfromtimestamp(node.timestamp).strftime('%Y-%m-%dT%H:%M:%SZ')
+        'timestamp': node.timestamp.strftime("%Y-%m-%dT%H:%M:%SZ")
     }
 
     return Response(json.dumps(response), mimetype='application/json')
@@ -201,7 +206,7 @@ def spned():
         app.current_balance[key] -= value
         temp = {}
         temp['payer'] = key
-        temp['points'] = value
+        temp['points'] = value * -1
         response.append(temp)
 
     return Response(json.dumps(response), mimetype='application/json')    
