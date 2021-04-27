@@ -136,6 +136,7 @@ def transactions():
     except:
         return Response(json.dumps({'error': 'Invalid point value'}), status=400, mimetype='application/json')
 
+    # Check if the timestamp is valid
     try:
         timestamp = datetime.strptime(data['timestamp'], "%Y-%m-%dT%H:%M:%SZ")
     except:
